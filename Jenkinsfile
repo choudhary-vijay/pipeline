@@ -1,19 +1,28 @@
 pipeline {
     agent any 
     stages {
-        stage('Build') { 
+        stage('pull') { 
             steps {
-                echo 'This is the Build'
+                git branch: 'terraform', url: 'https://github.com/choudhary-vijay/cdec-terraform.git'
             }
         }
-        stage('Test') { 
+        stage('init') { 
             steps {
-                echo 'This is the Test'
+                sh '''terraform init
+                      terraform plan
+                   '''
             }
         }
-        stage('Deploy') { 
+        stage('Approve') { 
+           steps {
+	            timeout(10) {
+      				  input message: 'Do you approve?', ok: "Yes"
+                }
+		    }
+        }
+        stage('apply') { 
             steps {
-                echo 'This is the Deploy' 
+                sh 'terraform apply --auto-approve'
             }
         }
     }
