@@ -1,11 +1,20 @@
-node{
-  stage('build'){
-      sh 'echo "hello jay"'
-  }
- stage('Test'){
-   sh 'echo "This is the test stage"'
- }
- stage('Deliver'){
-   sh 'echo "This is the Deliver stage"'
- }
+pipeline{
+    agent any
+     stages{
+        stage('pull'){
+          steps{
+            sh ' echo "hello this is the pull request"'
+          }
+        }
+       stage('build'){
+         steps{
+           sh 'echo "hello this is the build request"'
+         }
+       }
+      stage('Test'){
+        steps{
+          sh 'echo "hello this is the test request"'
+        }
+      }     
+   }
 }
